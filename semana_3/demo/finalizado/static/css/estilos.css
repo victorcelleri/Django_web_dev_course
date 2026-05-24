@@ -1,0 +1,25 @@
+﻿/* Estilos personalizados del Hub Docente */
+
+:root {
+    --color-primario: #2D4A7A;
+    --color-acento:   #E8833A;
+}
+
+body {
+    background-color: #f8f7f4;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.card {
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(45, 74, 122, 0.15) !important;
+}

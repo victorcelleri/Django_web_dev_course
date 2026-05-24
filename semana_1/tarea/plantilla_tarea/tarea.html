@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<!--
+  ================================================================
+  SEMANA 1 — TAREA: Tu Perfil Docente Completo
+  Tiempo estimado: 30 minutos
+
+  INSTRUCCIONES GENERALES
+  ───────────────────────
+  En el ejercicio de clase completaste secciones parciales.
+  Aquí construyes el perfil DESDE CERO con tu información real.
+
+  No copies el demo directamente — úsalo como referencia visual,
+  pero escribe tu propio contenido en cada sección.
+
+  TAREA 1 → Completa todas las secciones del HTML
+                      Busca "TAREA 1" — hay bloques en cada sección
+  TAREA 2 → Personaliza la paleta de colores en el CSS
+                      Busca "TAREA 2" — está en el bloque :root
+
+  ENTREGA: Este archivo tarea.html funcionando en el navegador,
+           con tu información real y tu paleta de colores propia.
+
+  CRITERIO: ¿Aparece tu nombre? ¿Tienes 3 estadísticas, 3 materias,
+            3 recursos? ¿Se ven tus colores personalizados?
+
+  ================================================================
+  Puente hacia Semana 2 — Django
+  ================================================================
+  Hoy los datos están escritos directamente aquí en el HTML.
+  Con Django, vendrán de la base de datos y se insertarán
+  automáticamente — sin tocar el HTML cada vez:
+
+    Hoy (HTML estático):         Semana 2 (Django dinámico):
+    ────────────────────         ──────────────────────────────────
+    <h1>Prof. García</h1>    →   <h1>{{ docente.nombre }}</h1>
+    <span>10</span>          →   <span>{{ docente.anos }}</span>
+    3 tarjetas de materias   →   {% for m in materias %} … {% endfor %}
+
+  El HTML que escribas hoy seguirá siendo la base visual exacta.
+  Django solo añade la capa de datos dinámica encima.
+  ================================================================
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- TAREA 1 ① — Escribe tu nombre y materia en el título de la pestaña -->
+  <title>Prof. ??? — ??? | Perfil Docente</title>
+
+  <style>
+
+    /* ============================================================
+       TAREA 2 — PALETA DE COLORES
+       Cambia al menos --azul-institucional y --naranja-acento
+       por colores que representen tu área o preferencia.
+
+       Herramienta: https://coolors.co  (genera paletas en segundos)
+       Formato: #RRGGBB  o  rgb(R, G, B)
+       ============================================================ */
+    :root {
+      --azul-institucional: #2C5364;   /* TAREA 2: cambia este color */
+      --naranja-acento:     #E76F51;   /* TAREA 2: cambia este color */
+      --color-fondo:        #F4F7F6;
+      --color-texto:        #1C2B2D;
+      --blanco:             #FFFFFF;
+      --azul-suave:         #EAF2F1;
+      --texto-suave:        #5B7F8A;
+
+      --radio-borde:        12px;
+      --sombra-tarjeta:     0 4px 20px rgba(0, 0, 0, 0.08);
+      --ancho-maximo:       900px;
+    }
+
+
+    /* ============================================================
+       RESET Y BASE — no modificar
+       ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: var(--color-fondo);
+      color: var(--color-texto);
+      line-height: 1.7;
+    }
+
+    .contenedor-centrado {
+      max-width: var(--ancho-maximo);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navegación */
+    .barra-navegacion {
+      background-color: var(--azul-institucional);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .barra-navegacion .contenedor-centrado {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-nombre {
+      color: var(--blanco);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.4px;
+    }
+
+    .menu-principal {
+      display: flex;
+      gap: 28px;
+    }
+
+    .menu-principal a {
+      color: var(--blanco);
+      text-decoration: none;
+      font-size: 0.9rem;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .menu-principal a:hover { opacity: 1; }
+
+    /* Hero */
+    .seccion-hero {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      padding: 72px 0 80px;
+      text-align: center;
+    }
+
+    .perfil-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background-color: var(--naranja-acento);
+      color: var(--blanco);
+      font-size: 2rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 24px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .perfil-nombre        { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; }
+    .perfil-especialidad  { font-size: 1.05rem; opacity: 0.85; margin-bottom: 20px; }
+    .perfil-lema          { font-style: italic; font-size: 1rem; opacity: 0.75; max-width: 480px; margin: 0 auto 36px; }
+
+    .grupo-botones {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .boton-principal {
+      background-color: var(--naranja-acento);
+      color: var(--blanco);
+      padding: 13px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background-color 0.2s;
+    }
+
+    .boton-principal:hover { filter: brightness(0.9); }
+
+    .boton-secundario {
+      background-color: transparent;
+      color: var(--blanco);
+      padding: 13px 32px;
+      border-radius: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .boton-secundario:hover { border-color: var(--blanco); }
+
+    /* Estadísticas */
+    .seccion-estadisticas {
+      background-color: var(--blanco);
+      padding: 40px 0;
+      border-bottom: 1px solid #E0E4EA;
+    }
+
+    .lista-estadisticas {
+      display: flex;
+      justify-content: center;
+      gap: 56px;
+      flex-wrap: wrap;
+    }
+
+    .tarjeta-estadistica  { text-align: center; }
+
+    .estadistica-numero {
+      display: block;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--azul-institucional);
+      line-height: 1;
+    }
+
+    .estadistica-etiqueta {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--texto-suave);
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Secciones de contenido */
+    .seccion-contenido          { padding: 72px 0; background-color: var(--blanco); }
+    .seccion-contenido.fondo-alterno { background-color: var(--azul-suave); }
+
+    .titulo-seccion {
+      font-size: 1.55rem;
+      color: var(--azul-institucional);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .subtitulo-seccion {
+      font-size: 0.92rem;
+      color: var(--texto-suave);
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    /* Acerca de mí */
+    .texto-acerca {
+      max-width: 600px;
+      margin: 0 auto 20px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .cita-destacada {
+      border-left: 4px solid var(--naranja-acento);
+      padding: 16px 24px;
+      margin: 32px auto;
+      max-width: 520px;
+      background-color: var(--azul-suave);
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      color: var(--texto-suave);
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    /* Tarjetas materias */
+    .lista-tarjetas {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .tarjeta-materia {
+      background-color: var(--blanco);
+      border-radius: var(--radio-borde);
+      padding: 28px 20px;
+      box-shadow: var(--sombra-tarjeta);
+      text-align: center;
+      flex: 1 1 180px;
+      max-width: 220px;
+      border-top: 4px solid var(--naranja-acento);
+      transition: transform 0.2s;
+    }
+
+    .tarjeta-materia:hover { transform: translateY(-5px); }
+
+    .tarjeta-icono        { font-size: 2rem; display: block; margin-bottom: 14px; }
+    .tarjeta-titulo       { font-size: 1rem; font-weight: 600; color: var(--azul-institucional); margin-bottom: 4px; }
+    .tarjeta-descripcion  { font-size: 0.85rem; color: var(--texto-suave); }
+
+    /* Tarjetas recursos */
+    .tarjeta-recurso {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background-color: var(--blanco);
+      border-radius: var(--radio-borde);
+      padding: 20px 22px;
+      box-shadow: var(--sombra-tarjeta);
+      text-decoration: none;
+      color: var(--color-texto);
+      flex: 1 1 220px;
+      max-width: 340px;
+      border-left: 4px solid var(--azul-institucional);
+      transition: box-shadow 0.2s;
+    }
+
+    .tarjeta-recurso:hover { box-shadow: 0 8px 28px rgba(0, 0, 0, 0.13); }
+
+    .recurso-icono        { font-size: 1.7rem; flex-shrink: 0; }
+    .recurso-texto        { flex: 1; }
+    .recurso-nombre       { font-weight: 600; color: var(--azul-institucional); margin-bottom: 3px; display: block; }
+    .recurso-descripcion  { font-size: 0.85rem; color: var(--texto-suave); }
+
+    /* Contacto */
+    .lista-contacto {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    .item-contacto {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background-color: var(--blanco);
+      border-radius: var(--radio-borde);
+      padding: 18px 22px;
+      box-shadow: var(--sombra-tarjeta);
+    }
+
+    .contacto-icono { font-size: 1.4rem; flex-shrink: 0; }
+
+    .contacto-texto       { font-size: 0.95rem; line-height: 1.5; }
+    .contacto-texto a     { color: var(--azul-institucional); text-decoration: none; font-weight: 600; }
+    .contacto-texto a:hover { text-decoration: underline; }
+
+    /* Pie */
+    .pie-pagina {
+      background-color: var(--azul-institucional);
+      color: rgba(255, 255, 255, 0.65);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 0.85rem;
+      line-height: 1.8;
+    }
+
+    /* Responsivo */
+    @media (max-width: 600px) {
+      .menu-principal     { display: none; }
+      .perfil-nombre      { font-size: 1.75rem; }
+      .perfil-lema        { font-size: 0.9rem; }
+      .lista-estadisticas { gap: 32px; }
+      .tarjeta-materia    { max-width: 100%; }
+      .tarjeta-recurso    { max-width: 100%; }
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <!-- ===========================================================
+       BARRA DE NAVEGACIÓN
+       =========================================================== -->
+  <header class="barra-navegacion">
+    <div class="contenedor-centrado">
+
+      <!-- TAREA 1 ② — Escribe tu nombre entre las etiquetas <span> -->
+      <span class="logo-nombre"></span>
+
+      <nav class="menu-principal" aria-label="Navegación principal">
+        <!-- TAREA 1 ③ — Agrega 4 enlaces de navegación hacia las secciones.
+             Ejemplo: <a href="#acerca">Acerca de mí</a>
+             Los id de las secciones son: acerca, materias, recursos, contacto -->
+      </nav>
+    </div>
+  </header>
+
+
+  <main>
+
+    <!-- =========================================================
+         HERO — primera impresión
+         ========================================================= -->
+    <section class="seccion-hero" id="inicio">
+      <div class="contenedor-centrado">
+
+        <!-- TAREA 1 ④ — Escribe tus dos iniciales entre las etiquetas <div> -->
+        <div class="perfil-avatar" aria-label="Iniciales del docente"></div>
+
+        <!-- TAREA 1 ⑤ — Escribe tu nombre completo entre las etiquetas <h1> -->
+        <h1 class="perfil-nombre"></h1>
+
+        <!-- TAREA 1 ⑥ — Escribe tu materia y colegio.
+             Formato: "Docente de [Materia] · [Colegio]"
+             El · se escribe como &middot; en HTML, o copias el símbolo: · -->
+        <p class="perfil-especialidad"></p>
+
+        <!-- TAREA 1 ⑦ — Escribe tu lema o filosofía docente entre comillas -->
+        <p class="perfil-lema"></p>
+
+        <!-- Botones — ya apuntan a las secciones correctas, no los cambies -->
+        <div class="grupo-botones">
+          <a href="#contacto" class="boton-principal">Contáctame</a>
+          <a href="#recursos" class="boton-secundario">Ver Recursos</a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =========================================================
+         ESTADÍSTICAS — agrega las 3 tarjetas desde cero
+         ========================================================= -->
+    <section class="seccion-estadisticas" aria-label="Estadísticas del docente">
+      <div class="contenedor-centrado">
+        <div class="lista-estadisticas">
+
+          <!-- TAREA 1 ⑧ — Crea 3 tarjetas de estadísticas.
+               Estructura de cada una:
+                 <article class="tarjeta-estadistica">
+                   <span class="estadistica-numero">NÚMERO</span>
+                   <span class="estadistica-etiqueta">ETIQUETA</span>
+                 </article>
+
+               Sugerencias de contenido:
+                 • Años de experiencia        • Materias dictadas
+                 • Estudiantes formados        • Grupos por semana
+                 • Años en el colegio actual   • Premio/logro destacado  -->
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =========================================================
+         ACERCA DE MÍ — escribe tu trayectoria
+         ========================================================= -->
+    <section class="seccion-contenido" id="acerca">
+      <div class="contenedor-centrado">
+
+        <h2 class="titulo-seccion">Acerca de mí</h2>
+        <p class="subtitulo-seccion">Mi trayectoria y filosofía de enseñanza</p>
+
+        <!-- TAREA 1 ⑨ — Escribe un párrafo sobre tu experiencia (mínimo 2 oraciones).
+             Usa <strong> para resaltar un dato importante.
+             Ejemplo: Soy docente de Ciencias con <strong>8 años</strong> de experiencia... -->
+        <p class="texto-acerca">
+
+        </p>
+
+        <!-- TAREA 1 ⑩ — Escribe una frase que resuma tu filosofía docente.
+             <blockquote> es la etiqueta correcta para citas. -->
+        <blockquote class="cita-destacada">
+
+        </blockquote>
+
+        <!-- TAREA 1 ⑪ — Escribe un segundo párrafo: tu colegio y actividades
+             adicionales (club, talleres, olimpiadas, etc.) -->
+        <p class="texto-acerca">
+
+        </p>
+
+      </div>
+    </section>
+
+
+    <!-- =========================================================
+         MATERIAS — agrega las tarjetas desde cero
+         ← Django: {% for m in docente.materias.all %}...{% endfor %}
+         ========================================================= -->
+    <section class="seccion-contenido fondo-alterno" id="materias">
+      <div class="contenedor-centrado">
+
+        <h2 class="titulo-seccion">Mis Materias</h2>
+        <p class="subtitulo-seccion">Asignaturas que dicto actualmente</p>
+
+        <div class="lista-tarjetas">
+
+          <!-- TAREA 1 ⑫ — Crea tarjetas, una por cada materia que dictas.
+               Estructura de cada una:
+                 <article class="tarjeta-materia">
+                   <span class="tarjeta-icono">EMOJI</span>
+                   <h3 class="tarjeta-titulo">NOMBRE MATERIA</h3>
+                   <p class="tarjeta-descripcion">GRADO o NIVEL</p>
+                 </article>
+
+               Elige emojis que representen tu materia:
+                 Ciencias: 🔬  Historia: 🏛  Arte: 🎨  Ed.Física: ⚽
+                 Inglés: 🌐    Música: 🎵   Química: ⚗  Biología: 🧬  -->
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =========================================================
+         RECURSOS — agrega tus 3 recursos favoritos
+         ========================================================= -->
+    <section class="seccion-contenido" id="recursos">
+      <div class="contenedor-centrado">
+
+        <h2 class="titulo-seccion">Recursos para Estudiantes</h2>
+        <p class="subtitulo-seccion">Herramientas gratuitas que recomiendo</p>
+
+        <div class="lista-tarjetas">
+
+          <!-- TAREA 1 ⑬ — Agrega 3 recursos: sitios web, apps o herramientas
+               que uses con tus estudiantes. Usa URLs reales.
+               Estructura de cada uno:
+                 <a href="URL" target="_blank" rel="noopener" class="tarjeta-recurso">
+                   <span class="recurso-icono">EMOJI</span>
+                   <p class="recurso-texto">
+                     <span class="recurso-nombre">NOMBRE DEL RECURSO</span>
+                     <span class="recurso-descripcion">QUÉ ES Y PARA QUÉ SIRVE</span>
+                   </p>
+                 </a>
+
+               ¿Por qué target="_blank"? → Abre en pestaña nueva.
+               ¿Por qué rel="noopener"?  → Buena práctica de seguridad. -->
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =========================================================
+         CONTACTO — agrega tus datos reales
+         ========================================================= -->
+    <section class="seccion-contenido fondo-alterno" id="contacto">
+      <div class="contenedor-centrado">
+
+        <h2 class="titulo-seccion">Contacto</h2>
+        <p class="subtitulo-seccion">¿Tienes alguna pregunta? Escríbeme.</p>
+
+        <div class="lista-contacto">
+
+          <!-- TAREA 1 ⑭ — Agrega al menos 3 ítems de contacto.
+               Estructura de cada uno:
+                 <div class="item-contacto">
+                   <span class="contacto-icono">EMOJI</span>
+                   <p class="contacto-texto">TU INFORMACIÓN</p>
+                 </div>
+
+               Sugerencias:
+                 📧  Tu correo con <a href="mailto:TU@EMAIL">TU@EMAIL</a>
+                 🕐  Horario de consultas con <strong>días</strong> y hora
+                 🏫  Tu colegio y ubicación (sala/piso)
+                 💬  Plataforma de comunicación (Teams, Meet, etc.)     -->
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ===========================================================
+       PIE DE PÁGINA
+       =========================================================== -->
+  <footer class="pie-pagina">
+    <!-- TAREA 1 ⑮ — Cambia el nombre, colegio y año -->
+    <p>© 2026 Tu Nombre · Tu Colegio</p>
+    <p>Construido con HTML y CSS puro — Semana 1, Piquero.ai</p>
+  </footer>
+
+
+</body>
+</html>

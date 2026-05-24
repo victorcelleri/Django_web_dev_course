@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Acerca &mdash; {{ nombre_docente }}{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════════════════════════════════════════════ PAGE HEADER -->
+<header class="ph">
+  <div class="ph-glow"></div>
+  <div class="container text-center text-white position-relative" style="z-index:1;">
+    <div class="hero-tag mb-3">Perfil del Docente</div>
+    <h1 style="font-family:'Playfair Display',serif; font-size:clamp(2.2rem,5vw,3.4rem); font-weight:700; letter-spacing:-.025em; color:#fff; margin-bottom:.6rem;">
+      {{ nombre_docente }}
+    </h1>
+    <p style="color: var(--c-orange); font-weight:600; margin:0;">
+      Docente de {{ materia }} &middot; {{ institucion }}
+    </p>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════ MAIN CONTENT -->
+<div class="container py-5" style="max-width: 860px;">
+  <div class="row g-5 align-items-start">
+
+    <!-- LEFT COLUMN -->
+    <div class="col-md-4 text-center">
+      <div class="av-lg mb-4">{{ iniciales }}</div>
+
+      <h5 style="font-family:'Playfair Display',serif; color:var(--c-navy); margin-bottom:4px; font-size:1.2rem;">
+        {{ nombre_docente }}
+      </h5>
+      <p style="color:var(--c-muted); font-size:.875rem; margin-bottom:1.4rem;">
+        Docente de {{ materia }}
+      </p>
+
+      <div class="mb-3">
+        <span class="pill">{{ institucion }}</span>
+        <span class="pill">{{ materia }}</span>
+        <span class="pill">{{ anos_experiencia }} a&ntilde;os exp.</span>
+      </div>
+
+      {% if correo %}
+      <a href="mailto:{{ correo }}" style="font-size:.82rem; color:var(--c-teal); font-weight:600; text-decoration:none;">
+        &#9993; {{ correo }}
+      </a>
+      {% endif %}
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-md-8">
+      <h2 style="font-family:'Playfair Display',serif; color:var(--c-navy); font-size:2.1rem; letter-spacing:-.025em; margin-bottom:1.5rem;">
+        Acerca del Docente
+      </h2>
+
+      <blockquote class="bq mb-4">
+        &ldquo;{{ frase_mision }}&rdquo;
+      </blockquote>
+
+      <div class="ir">
+        <span class="ir-lbl">Nombre completo</span>
+        <span class="ir-val">{{ nombre_docente }}</span>
+      </div>
+      <div class="ir">
+        <span class="ir-lbl">Instituci&oacute;n</span>
+        <span class="ir-val">{{ institucion }}</span>
+      </div>
+      <div class="ir">
+        <span class="ir-lbl">&Aacute;rea de ense&ntilde;anza</span>
+        <span class="ir-val">{{ materia }}</span>
+      </div>
+      <div class="ir">
+        <span class="ir-lbl">Trayectoria</span>
+        <span class="ir-val">{{ anos_experiencia }} a&ntilde;os formando estudiantes</span>
+      </div>
+      {% if correo %}
+      <div class="ir">
+        <span class="ir-lbl">Contacto</span>
+        <span class="ir-val">{{ correo }}</span>
+      </div>
+      {% endif %}
+
+      <a href="{% url 'inicio' %}" class="btn-outline-nv mt-4">&larr; Volver al inicio</a>
+    </div>
+
+  </div>
+
+  <!-- MINI STATS -->
+  <hr style="border-color: var(--c-border); margin: 3.5rem 0;">
+  <div class="row g-3 text-center">
+    <div class="col-4">
+      <div class="sm-card">
+        <span class="sm-num">{{ anos_experiencia }}</span>
+        <span class="sm-lbl">A&ntilde;os de experiencia</span>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="sm-card">
+        <span class="sm-num">{{ num_estudiantes }}</span>
+        <span class="sm-lbl">Estudiantes formados</span>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="sm-card">
+        <span class="sm-num">{{ num_materias }}</span>
+        <span class="sm-lbl">Materias activas</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
