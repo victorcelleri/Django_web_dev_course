@@ -44,8 +44,12 @@ def inicio(request):
 #    La plantilla a usar es 'hub/acerca.html'."
 # ============================================================
 def acerca(request):
-    # COMPLETA EL CONTEXTO Y USA render() ↓
-    pass
+    return render(request, 'hub/acerca.html', {
+        'nombre_docente': nombre_docente,
+        'materia': materia,
+        'institucion': institucion,
+        'anos_experiencia': anos_experiencia,
+    })
 
 
 # ============================================================
@@ -57,3 +61,7 @@ def acerca(request):
 #    recursos_lista en el contexto bajo la clave 'recursos'."
 # ============================================================
 # ESCRIBE AQUÍ ↓
+def recursos_view(request):
+    return render(request, 'hub/recursos.html', {
+        'recursos': recursos_lista,
+    })
