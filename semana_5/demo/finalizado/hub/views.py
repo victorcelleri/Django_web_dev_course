@@ -7,7 +7,7 @@ from .forms import ContactoForm, ContactoFormEN
 #  ZONA DE PERSONALIZACIÓN — edita solo esta sección
 # ════════════════════════════════════════════════════════════
 nombre_docente   = "Prof. Victor Celleri"
-iniciales        = "PG"
+iniciales        = "VC"
 materia          = "Matemáticas"
 institucion      = "Colegio Dolores Sucre"
 anos_experiencia = "10"
