@@ -19,11 +19,11 @@ from .forms import ContactoForm
 # ════════════════════════════════════════════════════════════
 #  ZONA DE PERSONALIZACIÓN — edita solo esta sección
 # ════════════════════════════════════════════════════════════
-nombre_docente   = ""    # Tu nombre. Ej: "Prof. Ramírez"
-materia          = ""    # Tu materia. Ej: "Educación Física"
-institucion      = ""    # Tu institución
-anos_experiencia = ""    # Años de experiencia
-frase_mision     = ""    # Tu filosofía docente
+nombre_docente   = "Victor Célleri"    # Tu nombre. Ej: "Prof. Ramírez"
+materia          = "Soporte Técnico"    # Tu materia. Ej: "Educación Física"
+institucion      = "Dolores Sucre"    # Tu institución
+anos_experiencia = "10 años"    # Años de experiencia
+frase_mision     = "El que persevera, alcanza"    # Tu filosofía docente
 # ════════════════════════════════════════════════════════════
 
 
