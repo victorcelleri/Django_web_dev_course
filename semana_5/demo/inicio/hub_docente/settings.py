@@ -71,3 +71,16 @@ USE_I18N = True
 USE_TZ = True
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {message_constants.ERROR: 'danger'}
+
+# Production security headers (apply when DEBUG=False)
+if not DEBUG:
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 3600
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True

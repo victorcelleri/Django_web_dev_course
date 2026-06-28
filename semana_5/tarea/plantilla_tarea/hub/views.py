@@ -55,8 +55,7 @@ def contacto(request):
                 correo=form.cleaned_data['correo'],
                 mensaje=form.cleaned_data['mensaje'],
             )
-            # ── TAREA 3: Personaliza este mensaje con tu nombre ──
-            messages.success(request, '¡Tu mensaje fue enviado correctamente! Te responderé pronto.')
+            messages.success(request, f'¡Gracias, {form.cleaned_data["nombre"]}! Tu mensaje fue recibido. Te responderé pronto, {nombre_docente}.')
             return redirect('contacto')
         else:
             messages.error(request, 'Por favor corrige los errores del formulario.')

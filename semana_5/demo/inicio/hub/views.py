@@ -1,5 +1,7 @@
-﻿from django.shortcuts import render
-from .models import Recurso
+﻿from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Recurso, Mensaje
+from .forms import ContactoForm, ContactoFormEN
 
 nombre_docente   = "Prof. González Silva"
 materia          = "Matemáticas"
@@ -35,6 +37,27 @@ def recursos_view(request):
     })
 
 
+def contacto(request):
+    if request.method == 'POST':
+        form = ContactoForm(request.POST)
+        if form.is_valid():
+            Mensaje.objects.create(
+                nombre=form.cleaned_data['nombre'],
+                correo=form.cleaned_data['correo'],
+                mensaje=form.cleaned_data['mensaje'],
+            )
+            messages.success(request, '¡Gracias! Tu mensaje fue recibido. Te responderé pronto.')
+            return redirect('contacto')
+        else:
+            messages.error(request, 'Por favor corrige los errores del formulario.')
+    else:
+        form = ContactoForm()
+    return render(request, 'hub/contacto.html', {
+        'nombre_docente': nombre_docente,
+        'form': form,
+    })
+
+
 # ════════════════════════════════════════════════════════════
 #  ENGLISH VIEWS  (/en/*)
 # ════════════════════════════════════════════════════════════
@@ -64,5 +87,26 @@ def resources_en(request):
     return render(request, 'hub/en/recursos.html', {
         'nombre_docente': 'Teacher Gonzalez Silva',
         'recursos': Recurso.objects.all(),
+    })
+
+
+def contact_en(request):
+    if request.method == 'POST':
+        form = ContactoFormEN(request.POST)
+        if form.is_valid():
+            Mensaje.objects.create(
+                nombre=form.cleaned_data['nombre'],
+                correo=form.cleaned_data['correo'],
+                mensaje=form.cleaned_data['mensaje'],
+            )
+            messages.success(request, 'Thank you! Your message was received. I will get back to you soon.')
+            return redirect('contacto_en')
+        else:
+            messages.error(request, 'Please fix the errors in the form.')
+    else:
+        form = ContactoFormEN()
+    return render(request, 'hub/en/contacto.html', {
+        'nombre_docente': 'Teacher Gonzalez Silva',
+        'form': form,
     })
 

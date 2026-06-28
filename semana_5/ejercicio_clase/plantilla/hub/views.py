@@ -16,11 +16,11 @@ from .forms import ContactoForm
 # ════════════════════════════════════════════════════════════
 #  ZONA DE PERSONALIZACIÓN — edita solo esta sección
 # ════════════════════════════════════════════════════════════
-nombre_docente   = ""    # Tu nombre. Ej: "Prof. Ramírez"
-materia          = ""    # Tu materia. Ej: "Química"
-institucion      = ""    # Tu institución
-anos_experiencia = ""    # Años de experiencia
-frase_mision     = ""    # Tu filosofía docente
+nombre_docente   = "Prof. González Silva"
+materia          = "Matemáticas"
+institucion      = "Colegio Dolores Sucre"
+anos_experiencia = "10"
+frase_mision     = "Cada estudiante puede dominar las matemáticas con la guía correcta."
 # ════════════════════════════════════════════════════════════
 
 
@@ -49,5 +49,19 @@ def recursos_view(request):
 #    con el formulario y sus errores."
 # ============================================================
 def contacto(request):
-    # COMPLETA AQUÍ ↓
-    pass
+    if request.method == 'POST':
+        form = ContactoForm(request.POST)
+        if form.is_valid():
+            Mensaje.objects.create(
+                nombre=form.cleaned_data['nombre'],
+                correo=form.cleaned_data['correo'],
+                mensaje=form.cleaned_data['mensaje'],
+            )
+            nombre = form.cleaned_data['nombre']
+            messages.success(request, f'¡Gracias, {nombre}! Tu mensaje fue recibido. Te responderé pronto.')
+            return redirect('contacto')
+        else:
+            messages.error(request, 'Por favor corrige los errores del formulario.')
+    else:
+        form = ContactoForm()
+    return render(request, 'hub/contacto.html', {'form': form, 'nombre_docente': nombre_docente})

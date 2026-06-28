@@ -6,15 +6,15 @@ from .forms import ContactoForm, ContactoFormEN
 # ════════════════════════════════════════════════════════════
 #  ZONA DE PERSONALIZACIÓN — edita solo esta sección
 # ════════════════════════════════════════════════════════════
-nombre_docente   = "Prof. Victor Celleri"
+nombre_docente   = "Prof. Victor Célleri"
 iniciales        = "VC"
-materia          = "Matemáticas"
+materia          = "Soporte Técnico"
 institucion      = "Colegio Dolores Sucre"
 anos_experiencia = "10"
-num_estudiantes  = "320"
-num_materias     = "3"
-correo           = "prof.garcia@colegio.edu"
-frase_mision     = "Cada estudiante puede dominar las matemáticas con la guía correcta."
+num_estudiantes  = "500"
+num_materias     = "2"
+correo           = "victor.celleri@docentes.educacion.edu.ec"
+frase_mision     = "Persevera y alcanzaras tu meta."
 
 icono_materia      = "📐"
 desc_card_sobre_mi = f"Mi trayectoria, filosofía de enseñanza y {anos_experiencia} años formando estudiantes en {materia}."
